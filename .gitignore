@@ -31,7 +31,7 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # env files (can opt-in for committing if needed)
-.env*
+.env
 
 # vercel
 .vercel
@@ -42,6 +42,5 @@ next-env.d.ts
 
 # 敏感配置文件
 # removed auth.json
-/config/family-data.json
 
 # 保留示例配置文件
