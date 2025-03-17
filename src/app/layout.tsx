@@ -19,7 +19,7 @@ const familyName = process.env.NEXT_PUBLIC_FAMILY_NAME || '白氏';
 const googleAnalyticsId = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID;
 
 export const metadata: Metadata = {
-  title: `${familyName}族谱`,
+  title: `${familyName}氏族谱`,
   description: `${familyName}氏家族族谱记录`,
   robots: {
     index: false,
