@@ -11,12 +11,16 @@ interface FamilyTreeProps {
 // 创建一个映射，用于快速查找人物
 const createPersonMap = (data: FamilyData) => {
     const map = new Map<string, Person>();
+    if (!data || !data.generations) return map;
+    
     data.generations.forEach(generation => {
-        generation.people.forEach(person => {
-            if (person.id) {
-                map.set(person.id, person);
-            }
-        });
+        if (generation && generation.people) {
+            generation.people.forEach(person => {
+                if (person && person.id) {
+                    map.set(person.id, person);
+                }
+            });
+        }
     });
     return map;
 };
@@ -25,25 +29,31 @@ const createPersonMap = (data: FamilyData) => {
 const createSonsMap = (data: FamilyData) => {
     const map = new Map<string, Person[]>();
     
+    if (!data || !data.generations) return map;
+    
     // 初始化每个人的儿子数组
     data.generations.forEach(generation => {
-        generation.people.forEach(person => {
-            if (person.id) {
-                map.set(person.id, []);
-            }
-        });
+        if (generation && generation.people) {
+            generation.people.forEach(person => {
+                if (person && person.id) {
+                    map.set(person.id, []);
+                }
+            });
+        }
     });
     
     // 根据 fatherId 填充儿子数组（包含所有儿子）
     data.generations.forEach(generation => {
-        generation.people.forEach(person => {
-            // 任何有fatherId的人都被认为是其父亲的儿子
-            if (person.fatherId && map.has(person.fatherId)) {
-                const sons = map.get(person.fatherId) || [];
-                sons.push(person);
-                map.set(person.fatherId, sons);
-            }
-        });
+        if (generation && generation.people) {
+            generation.people.forEach(person => {
+                // 任何有fatherId的人都被认为是其父亲的儿子
+                if (person && person.fatherId && map.has(person.fatherId)) {
+                    const sons = map.get(person.fatherId) || [];
+                    sons.push(person);
+                    map.set(person.fatherId, sons);
+                }
+            });
+        }
     });
     
     return map;
@@ -194,12 +204,19 @@ const Generation = ({
 };
 
 export default function FamilyTree({ familyData }: FamilyTreeProps) {
+    const [isDataReady, setIsDataReady] = useState(false);
     const [personMap, setPersonMap] = useState<Map<string, Person>>(new Map());
     const [sonsMap, setSonsMap] = useState<Map<string, Person[]>>(new Map());
     
     useEffect(() => {
-        setPersonMap(createPersonMap(familyData));
-        setSonsMap(createSonsMap(familyData));
+        // 确保 familyData 存在且结构正确
+        if (familyData && familyData.generations) {
+            setPersonMap(createPersonMap(familyData));
+            setSonsMap(createSonsMap(familyData));
+            setIsDataReady(true);
+        } else {
+            setIsDataReady(false);
+        }
     }, [familyData]);
     
     const scrollToPerson = (personId: string) => {
@@ -213,6 +230,11 @@ export default function FamilyTree({ familyData }: FamilyTreeProps) {
             }, 2000);
         }
     };
+    
+    // 使用isDataReady状态来确保数据已准备好
+    if (!isDataReady || !familyData || !familyData.generations) {
+        return <div className="p-4 text-center text-gray-500">家族数据加载中或不可用...</div>;
+    }
     
     return (
         <div className="max-w-7xl mx-auto px-4">
