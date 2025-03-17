@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import FamilyTree from './components/FamilyTree';
 import TreeView from './components/TreeView';
-import Footer from './components/Footer';
 import LoginForm from './components/LoginForm';
 import { useFamilyData } from '../data/familyDataWithIds';
 import { QueueListIcon, Squares2X2Icon, ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline';
