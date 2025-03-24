@@ -41,8 +41,6 @@ export default function RootLayout({
   return (
     <html lang="zh-CN">
       <head>
-        <meta name="robots" content="noindex,nofollow" />
-        <meta name="googlebot" content="noindex,nofollow" />
         <link rel="icon" href="https://storage.xxlb.org/%E6%97%8F%E8%B0%B11.jpg" type="image/x-icon"/>
         <Script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3811349067654166"
                 crossOrigin="anonymous"/>
